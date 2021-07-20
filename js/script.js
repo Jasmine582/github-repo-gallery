@@ -2,7 +2,7 @@
 const profileInfo = document.querySelector(".overview");
 //github username
 const username = "Jasmine582";
-
+const list = document.querySelector(".repo-list");
 //fetch api json
 const userInfo = async function () {
     const gitInfo = await fetch(`https://api.github.com/users/${username}` );
@@ -27,5 +27,21 @@ const displayInfo = function (data) {
  `;
 
  profileInfo.append(div);
+fetchRepos();
+};
 
+//fetch repos
+const fetchRepos = async function () {
+   const gitRepos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100` );
+   const repoData = await gitRepos.json();
+   displayGitRepos(repoData);
+};
+//displaying git repos info 
+const displayGitRepos = function (repos) {
+    for (const repo of repos) {
+        const repoInfo = document.createElement("li");
+        repoInfo.classList.add("repo");
+        repoInfo.innerHTML = `<h3>${repo.name}</h3>`
+        list.append(repoInfo);
+    }
 };
